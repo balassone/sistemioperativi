@@ -14,7 +14,7 @@ int main(int argc, char*argv[]){
 				break;
 			case 0:
 				printf("Sono il figlio!, il mio PID e' %d\n",getpid());
-				execl(argv[1],argv[2],argv[3],NULL);
+				execl(argv[1],argv[1],argv[2],argv[3],NULL);
 				printf("Se arrivo qui stai sbagliando!\n");
 				kill(getppid(), SIGKILL);
 				exit(1);
