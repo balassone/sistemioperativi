@@ -17,5 +17,5 @@ int Signal_Sem(int sem_id, int numsem){
 	sem_buf.sem_flg=0;
 	sem_buf.sem_op=1;
 	err = semop(sem_id,&sem_buf,1);
-	return err
+	return err;
 }
