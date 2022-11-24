@@ -1,4 +1,4 @@
-
+Ciao
 # Corso di Sistemi Operativi - A.A. 2022-2023 <img src="https://github.com/SO-unina/esercitazioni/blob/main/images/SO-unina_logo.png" width="100"> 
 ## Fork di Francesco Balassone
 > **_N.B.:_** Prima di consultare le esercitazioni, leggere la [guida breve](git) per poter utilizzare il comando ``git``
