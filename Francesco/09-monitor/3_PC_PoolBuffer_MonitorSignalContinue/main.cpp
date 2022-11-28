@@ -36,6 +36,7 @@ int main(){
 			int val=rand()%100+1;
 			std::cout <<getpid()<< ": Valore prodotto: " << val << std::endl;
 			Produzione(pc,val);
+			exit(0);
 		}
 	}
 
