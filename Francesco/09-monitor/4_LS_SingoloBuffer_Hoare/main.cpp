@@ -15,7 +15,9 @@ int main(){
 	int shmid = shmget(shm_key,sizeof(LettScritt),IPC_CREAT|0664);
 	LettScritt* ls = (LettScritt*) shmat(shmid,NULL,0);
 	init_monitor(&(ls->m),2);
-
+	ls->numlettori=0;
+	ls->numscrittori=0;
+	ls->buffer=0;
 	for(int i{0}; i<N; ++i){
 		pid_t pid=fork();
 		if(pid==0){
