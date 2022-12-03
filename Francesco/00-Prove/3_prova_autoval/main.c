@@ -15,8 +15,10 @@ void * visualizza(void *);
 
 typedef struct {
 
-    //  TODO: completare con i parametri da passare ai thread consumatori
+    //  DONE: completare con i parametri da passare ai thread consumatori
     //
+	VettoreProdCons* vpc;
+	BufferMutuaEsclusione* bme;
 
 } parametri_consumatore;
 
@@ -28,40 +30,59 @@ int main() {
     
     pthread_t visualizzatore;
 
-    VettoreProdCons * vettore = // TODO;
+    VettoreProdCons * vettore = (VettoreProdCons*) malloc(sizeof(VettoreProdCons)); // DONE;
 
-    BufferMutuaEsclusione * buffer = // TODO;
+    BufferMutuaEsclusione * buffer = (BufferMutuaEsclusione*) malloc(sizeof(BufferMutuaEsclusione));// DONE;
 
     srand(getpid());
 
-    // TODO: inizializzare le strutture e i relativi campi
+    // DONE: inizializzare le strutture e i relativi campi
     
-    parametri_consumatore * parametri = // TODO;
+	inizializza_vettore(vettore);
+	inizializza_buffer(buffer);
 
+	pthread_attr_t attr;
+	pthread_attr_init(&attr);
+	pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE);
+
+    parametri_consumatore * parametri = (parametri_consumatore*) malloc(sizeof(parametri_consumatore));// DONE;
+	
+	parametri->vpc=vettore;
+	parametri->bme=buffer;
 
     for(int i=0; i<NUM_PRODUTTORI; i++) {
 
-        // TODO: creare thread produttori
+        // DONE: creare thread produttori
+		pthread_create(&produttori[i],&attr,produttore,(void*)vettore);
     }
 
     for(int i=0; i<NUM_CONSUMATORI; i++) {
 
-        // TODO: creare thread consumatori
-    }
+        // DONE: creare thread consumatori
+    	pthread_create(&consumatori[i],&attr,consumatore,(void*)parametri);
+	}
     
-    // TODO: creare thread visualizzatore
+    // DONE: creare thread visualizzatore
+	pthread_create(&visualizzatore,&attr,visualizza,(void*)buffer);
+    // DONE: join delle 3 tipologie di thread
 
-    // TODO: join delle 3 tipologie di thread
+	for(int i=0; i<NUM_PRODUTTORI; i++) pthread_join(produttori[i],NULL);
+	for(int i=0; i<NUM_CONSUMATORI; i++) pthread_join(consumatori[i],NULL);
+	pthread_join(visualizzatore,NULL);
 
-    // TODO: deallocazione strutture 
+    // DONE: deallocazione strutture 
     
-    return 0;
+	rimuovi_vettore(vettore);
+	rimuovi_buffer(buffer);
+	pthread_attr_destroy(&attr);
+    free(parametri);
+	return 0;
 
 }
 
 void * produttore(void * p) {
 
-    VettoreProdCons * vettore = // TODO: prelievo parametri ;
+    VettoreProdCons * vettore = (VettoreProdCons*) p; // DONE: prelievo parametri ;
 
     for(int i=0; i<PRODUZIONI; i++) {
 
@@ -71,34 +92,34 @@ void * produttore(void * p) {
 
         produci(vettore, valore);
     }
-
     return NULL;
 }
 
 void * consumatore(void * p) {
 
-    parametri_consumatore * parametri = // TODO: prelievo parametri ;
+    parametri_consumatore * parametri = (parametri_consumatore*) p;// DONE: prelievo parametri ;
 
     int valore;
 
-    // TODO: consumare
-
+    // DONE: consumare
+	valore = consuma(parametri->vpc);
     printf("[CONSUMATORE] Consumazione: %d\n", valore);
 
-    // TODO: aggiornare
-
+    // DONE: aggiornare
+	aggiorna_buffer(parametri->bme,valore);
     return NULL;
 }
 
 void * visualizza(void * p) {
 
-     BufferMutuaEsclusione * buf = // TODO: prelievo parametri ;
+     BufferMutuaEsclusione * buf = (BufferMutuaEsclusione*) p;// DONE: prelievo parametri ;
 
      for (int i=0; i< (NUM_PRODUTTORI*PRODUZIONI)/NUM_CONS; i++) {
                   
              int val;
              
-             // TODO: stampare
+             // DONE: stampare
+			 val=stampa_valore(buf);
              
              printf("[VISUALIZZATORE]: La somma degli elementi consumati è: %d\n",val);
      

@@ -17,7 +17,13 @@ typedef struct {
 
     int stato[DIM];
 
-    // TODO: completare campi della struttura per la gestione in mutua esclusione del pool di buffer
+    // DONE: completare campi della struttura per la gestione in mutua esclusione del pool di buffer
+	int liberi; 
+	int occupati; 
+	
+	pthread_mutex_t mutex;
+	pthread_cond_t cv_prod;
+	pthread_cond_t cv_cons;
 
 } VettoreProdCons;
 
@@ -26,7 +32,11 @@ typedef struct {
     int buffer;
     int num_somme;
 
-     // TODO: completare campi della struttura per la gestione in mutua esclusione del buffer
+     // DONE: completare campi della struttura per la gestione in mutua esclusione del buffer
+	
+	pthread_mutex_t mutex;
+	pthread_cond_t cv_visual;
+	pthread_cond_t cv_cons;
 
 } BufferMutuaEsclusione;
 
