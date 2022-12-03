@@ -117,7 +117,7 @@ void aggiorna_buffer(BufferMutuaEsclusione * p, int valore) {
 
 	p->buffer=p->buffer+valore;
 
-	if(p->num_somme==NUM_CONS) pthread_cond_signal(&(p->cv_visual));
+	pthread_cond_signal(&(p->cv_visual));
 	
 	pthread_mutex_unlock(&(p->mutex));
 }
