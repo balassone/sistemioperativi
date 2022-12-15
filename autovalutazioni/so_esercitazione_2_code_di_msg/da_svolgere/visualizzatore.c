@@ -16,9 +16,10 @@ void visualizzatore(int queue_checksum_visual){
         message mess;
 
         for (i=0; i<NUM_MESSAGES; i++){
+				sleep(1);
                 printf("[visualizzatore] Ricevo dal processo Checksum...\n");
 
-                ret = /* TODO: ricevere il messaggio dal processo checksum */
+                ret = msgrcv(queue_checksum_visual,&mess,sizeof(message)-sizeof(long),MSG_TYPE,IPC_NOWAIT);/* TODO: ricevere il messaggio dal processo checksum */
 
                 if(ret<0) {
                         if (errno == ENOMSG){
@@ -34,9 +35,9 @@ void visualizzatore(int queue_checksum_visual){
                 else {
                         printf("[visualizzatore] Messaggio RICEVUTO...PRINT!\n");
                         printf("[visualizzatore] ...............mess.stringa: %s\n", mess.stringa);
-                        printf("[visualizzatore] ...............mess.array[0]: %d\n", mess.array[0]);
-                        printf("[visualizzatore] ...............mess.array[1]: %d\n", mess.array[1]);
-                        printf("[visualizzatore] ...............mess.var: %d\n", mess.var);
+                        printf("[visualizzatore] ...............mess.array[0]: %d\n", mess.arr[0]);
+                        printf("[visualizzatore] ...............mess.array[1]: %d\n", mess.arr[1]);
+                        printf("[visualizzatore] ...............mess.var: %d\n", mess.intero);
                 }
         }
         

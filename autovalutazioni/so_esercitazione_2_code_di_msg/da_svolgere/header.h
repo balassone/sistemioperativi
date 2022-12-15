@@ -13,20 +13,29 @@
 #define VARCOND_GEN_CONSUMATORI 1
 
 #define NUM_MESSAGES 8
-
+#define DIM 4
 
 #include "monitor_signal_continue.h"
 
 typedef struct {
         
     /* TODO: Definire il messaggio */
-
+	long type;
+	char stringa[STRING_MAX_DIM];
+	int arr[INT_MAX_DIM];
+	int intero; //Inizialmente 0
 } message;
+
+#define CV_PROD 0
+#define CV_CONS 1
 
 struct ProdConsGen {
     
     /* TODO: Definire le variabili per la sincronizzazione dei processi generatori prod/cons */
-    
+    message queue[DIM];
+	int testa;
+	int coda;
+	Monitor m;
 };
 
 void generatore_produttore(struct ProdConsGen *);
