@@ -4,7 +4,7 @@
 void * gestoreMolo (void * p){
 	
     // TODO: ottenere il riferimento alla struttura monitor da *p
-    
+	struct monitor* m = (struct monitor*) p;    
 	int i,s;
 	s=m->molo;
 	for(i=0; i<10; i++){
@@ -22,7 +22,7 @@ void * gestoreMolo (void * p){
 void * Viaggiatori (void * p){
 	
     // TODO: ottenere il riferimento alla struttura monitor da *p
-    
+   	struct monitor* m = (struct monitor*) p; 
 	int i;
 	int ris;
 	for(i=0;i<3;i++){
@@ -51,26 +51,37 @@ int main() {
 	int i;
 
     /* TODO: Allocare 5 istanze di monitor, e attivarle con inizializza() */
-
+	for(i=0; i<5; ++i){
+		m[i]=(struct monitor*) malloc(sizeof(struct monitor));
+		inizializza(m[i]);
+		m[i]->id_nave=i+1;
+	}
 	// TODO: assegnare un id ad ogni nave
 	
     /* TODO: Avviare 5 thread, facendogli eseguire la funzione gestoreMolo(),
      *     e passando ad ognuno una istanza di monitor diversa m[i]
      */
-    
+    for(i=0; i<5; ++i){
+		pthread_create(&gestore_molo[i],&attr,gestoreMolo,(void*)m[i]);
+	}
     
     /* TODO: Avviare 10 thread, facendogli eseguire la funzione Viaggiatori(),
      *      e passando ad ognuno una istanza di monitor diversa, da scegliere
      *      a caso con "rand() % 5"
      */
-    
+    for(i=0; i<10; ++i){
+		pthread_create(&viagg[i],&attr,Viaggiatori,(void*)m[rand()%5]);
+	}
     
     /* TODO: Effettuare la join con i thread "gestoreMolo" */
-    
+   for(i=0; i<5; ++i) pthread_join(gestore_molo[i],NULL); 
     /* TODO: Effettuare la join con i thread "Viaggiatori" */
-    
+    for(i=0; i<10; ++i) pthread_join(viagg[i],NULL);
     /* TODO: Disattivazione delle 5 istanze di monitor con rimuovi() */
-    
+    for(i=0; i<5; ++i){
+		rimuovi(m[i]);
+		free(m[i]);
+	}
     /* TODO: Deallocazione delle 5 istanze di monitor con free() */
 	
     

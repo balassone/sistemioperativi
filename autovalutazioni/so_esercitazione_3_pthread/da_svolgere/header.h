@@ -15,7 +15,14 @@ struct monitor {
 	int id_nave;
 
 	/* TODO: Aggiungere variabili per la sincronizzazione */
-    
+	int numlettori;
+	int numscrittori;
+	int lettori_wait;
+	int scrittori_wait;
+
+	pthread_mutex_t mutex;
+	pthread_cond_t cv_lett;
+	pthread_cond_t cv_scritt;
 };
 
 void inizializza(struct monitor * m);
